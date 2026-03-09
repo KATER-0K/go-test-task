@@ -31,6 +31,7 @@ CRUD приложение для управления задачами в Postgr
 cd task1
 export DATABASE_URL="postgres://postgres:пароль@localhost:5432/go_test_task?sslmode=disable"
 go run main.go
+```
 
 ### пример:
 
@@ -62,6 +63,7 @@ go run main.go
 ```bash
 cd task2
 go run main.go ./source_folder ./delete_folder
+```
 
 ### пример:
 
@@ -93,6 +95,7 @@ go run main.go ./save ./delete
 ```bash
 cd task3
 go run main.go
+```
 
 ### пример:
 
@@ -145,4 +148,3 @@ GitHub: https://github.com/KATER-0K
 
 спасибо за внимание! 🙏
 </div>
-```
