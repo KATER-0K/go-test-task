@@ -109,7 +109,7 @@ go run main.go
 содержимое: device=999
 ✓ файл test2.txt ОСТАВЛЕН (не содержит device=123)
 ```
-### установка
+## установка
 
 ### требования:
 
@@ -123,7 +123,7 @@ git clone https://github.com/KATER-0K/go-test-task.git
 cd go-test-task
 go mod download
 ```
-### структура проекта
+## структура проекта
 ```text
 go-test-task/
 ├── task1/
@@ -139,7 +139,7 @@ go-test-task/
 ├── go.mod
 └── README.md
 ```
-### автор
+## автор
 
 **Katerina Terekhina** (KATER-0K) <br>
 GitHub: https://github.com/KATER-0K <br>
