@@ -74,9 +74,9 @@ go run main.go ./save ./delete
 ```
 ### результат:
 
-✓ файлы заархивированы в archive.zip
-удален: delete\old.txt
-✓ файлы удалены
+✓ файлы заархивированы в archive.zip <br> 
+удален: delete\old.txt <br>
+✓ файлы удалены <br>
 
 ## Task 3
 
@@ -118,13 +118,13 @@ go run main.go
 - Git
 
 ### шаги:
-
-git clone https://github.com/KATER-0K/go-test-task.git <br>
-cd go-test-task <br>
-go mod download <br>
-
-### структура проекта
 ```bash
+git clone https://github.com/KATER-0K/go-test-task.git
+cd go-test-task
+go mod download
+```
+### структура проекта
+```text
 go-test-task/
 ├── task1/
 │   ├── main.go
@@ -141,11 +141,10 @@ go-test-task/
 ```
 ### автор
 
-Katerina Terekhina (KATER-0K)
-
-GitHub: https://github.com/KATER-0K
+**Katerina Terekhina** (KATER-0K) <br>
+GitHub: https://github.com/KATER-0K <br>
 
 <div align="center">
 
-спасибо за внимание! 🙏
+спасибо за внимание 🙏
 </div>
