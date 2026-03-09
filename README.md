@@ -34,7 +34,7 @@ go run main.go
 ```
 
 ### пример:
-
+```bash
 === МЕНЮ ===
 1. добавить задачу
 2. показать все задачи
@@ -46,7 +46,7 @@ go run main.go
 описание: пройти тестовое задание
 статус: new
 ✓ задача добавлена
-
+```
 ## Task 2
 
 архивация файлов и очистка папок
@@ -66,12 +66,12 @@ go run main.go ./source_folder ./delete_folder
 ```
 
 ### пример:
-
+```bash
 mkdir save delete
 echo "тест" > save/file1.txt
 echo "удалить" > delete/old.txt
 go run main.go ./save ./delete
-
+```
 ### результат:
 
 ✓ файлы заархивированы в archive.zip
@@ -98,7 +98,7 @@ go run main.go
 ```
 
 ### пример:
-
+```bash
 === ТЕСТ 1: файл с device=123 ===
 создан файл: test1.txt
 содержимое: device=123
@@ -108,7 +108,7 @@ go run main.go
 создан файл: test2.txt
 содержимое: device=999
 ✓ файл test2.txt ОСТАВЛЕН (не содержит device=123)
-
+```
 ### установка
 
 ### требования:
@@ -119,12 +119,12 @@ go run main.go
 
 ### шаги:
 
-git clone https://github.com/KATER-0K/go-test-task.git
-cd go-test-task
-go mod download
+git clone https://github.com/KATER-0K/go-test-task.git <br>
+cd go-test-task <br>
+go mod download <br>
 
 ### структура проекта
-
+```bash
 go-test-task/
 ├── task1/
 │   ├── main.go
@@ -138,10 +138,11 @@ go-test-task/
 ├── .gitignore
 ├── go.mod
 └── README.md
-
+```
 ### автор
 
 Katerina Terekhina (KATER-0K)
+
 GitHub: https://github.com/KATER-0K
 
 <div align="center">
