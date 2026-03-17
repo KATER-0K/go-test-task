@@ -3,11 +3,14 @@ package main
 import (
 	"bufio"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -19,6 +22,13 @@ type Task struct {
 	Description string
 	Status      string
 	CreatedAt   time.Time
+}
+
+// для JSON файла
+type TaskFromFile struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
 }
 
 var db *sql.DB
@@ -38,7 +48,7 @@ func main() {
 	}
 	defer db.Close()
 
-	// проверяем подключение
+	// проверка подключения
 	if err = db.Ping(); err != nil {
 		log.Fatal(err)
 	}
@@ -64,6 +74,8 @@ func main() {
 		case "4":
 			deleteTask()
 		case "5":
+			importTasksFromFile()
+		case "6":
 			fmt.Println("выход из программы...")
 			return
 		default:
@@ -99,7 +111,8 @@ func showMenu() {
 	fmt.Println("2. показать все задачи")
 	fmt.Println("3. обновить задачу")
 	fmt.Println("4. удалить задачу")
-	fmt.Println("5. выход")
+	fmt.Println("5. импортировать задачи из файлов")
+	fmt.Println("6. выход")
 	fmt.Print("выберите: ")
 }
 
@@ -190,4 +203,85 @@ func deleteTask() {
 	} else {
 		fmt.Println("✓ задача удалена")
 	}
+}
+
+// импорт задач из JSON файлов
+func importTasksFromFile() {
+	fmt.Print("введите путь к папке с файлами (например ./files): ")
+	filesDir := readLine()
+
+	// ищем все JSON файлы в папке
+	files, err := filepath.Glob(filepath.Join(filesDir, "*.json"))
+	if err != nil {
+		fmt.Printf("ошибка поиска файлов: %v\n", err)
+		return
+	}
+
+	if len(files) == 0 {
+		fmt.Println("файлы не найдены в папке")
+		return
+	}
+
+	fmt.Printf("найдено файлов: %d\n", len(files))
+
+	// создаём канал для результатов
+	results := make(chan string, len(files))
+
+	var wg sync.WaitGroup
+
+	for _, file := range files {
+		wg.Add(1)
+		go processFile(file, &wg, results)
+	}
+
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	successCount := 0
+	errorCount := 0
+
+	for result := range results {
+		fmt.Println(result)
+		if strings.HasPrefix(result, "✓") {
+			successCount++
+		} else {
+			errorCount++
+		}
+	}
+
+	fmt.Println("\n=== ИТОГИ ИМПОРТА ===")
+	fmt.Printf("успешно: %d\n", successCount)
+	fmt.Printf("ошибки: %d\n", errorCount)
+}
+
+func processFile(filePath string, wg *sync.WaitGroup, results chan<- string) {
+	defer wg.Done()
+
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		results <- fmt.Sprintf("ошибка чтения %s: %v", filePath, err)
+		return
+	}
+
+	// парсим JSON
+	var task TaskFromFile
+	err = json.Unmarshal(data, &task)
+	if err != nil {
+		results <- fmt.Sprintf("ошибка парсинга %s: %v", filePath, err)
+		return
+	}
+
+	// записываем в базу данных
+	_, err = db.Exec(
+		"INSERT INTO tasks (title, description, status) VALUES ($1, $2, $3)",
+		task.Title, task.Description, task.Status,
+	)
+	if err != nil {
+		results <- fmt.Sprintf("ошибка записи %s: %v", filePath, err)
+		return
+	}
+
+	results <- fmt.Sprintf("✓ успешно: %s", filePath)
 }
